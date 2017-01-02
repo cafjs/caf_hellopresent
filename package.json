@@ -1,7 +1,7 @@
 {
   "name": "caf_hellopresent",
   "description": "Cloud Assistants presentation tool example",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "Antonio Lain <antlai@cafjs.com>",
     "dependencies": {
         "react" : "^0.14.0",
@@ -20,7 +20,8 @@
         "object-assign": "^4.1.0",
         "recharts" : "^0.14.2",
         "highlight.js": "^9.7.0",
-        "reveal.js" : "^3.3.0"
+        "reveal.js" : "^3.3.0",
+        "superagent" : "^3.3.1"
    },
     "devDependencies": {
         "nodeunit" : ">=0.9",

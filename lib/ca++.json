@@ -31,7 +31,8 @@
                         "slidesFileName": "process.env.SLIDES_FILE_NAME||slides.md",
                         "adminCA": "process.env.ADMIN_CA||admin",
                         "minPageTime" : "process.env.MIN_PAGE_TIME||2000",
-                        "maxPageTime" : "process.env.MAX_PAGE_TIME||900000"
+                        "maxPageTime" : "process.env.MAX_PAGE_TIME||900000",
+                        "print" : "process.env.PRINT||false"
                    }
                 }
             ]
