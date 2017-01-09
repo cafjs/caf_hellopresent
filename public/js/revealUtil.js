@@ -33,9 +33,16 @@ exports.init = function(ctx, data) {
 
     Reveal.addEventListener('ready', function() {
         hljs.initHighlighting();
-        if (typeof firstSlide === 'number') {
+        if (data.print) {
+	    var link = document.createElement( 'link' );
+	    link.rel = 'stylesheet';
+	    link.type = 'text/css';
+	    link.href = 'reveal/css/print/pdf.css';
+	    document.getElementsByTagName('head')[0].appendChild(link);
+        } else if (typeof firstSlide === 'number') {
             Reveal.slide(firstSlide, 0, 0);
         }
+
         console.log('READY!');
     });
 
@@ -54,13 +61,6 @@ exports.init = function(ctx, data) {
         if (err) {
             console.log(err);
         } else {
-            if (data.print) {
-	        var link = document.createElement( 'link' );
-	        link.rel = 'stylesheet';
-	        link.type = 'text/css';
-	        link.href = 'reveal/css/print/pdf.css';
-	        document.getElementsByTagName('head')[0].appendChild(link);
-            }
             Reveal.initialize({
                 history: false,
                 progress: false,
