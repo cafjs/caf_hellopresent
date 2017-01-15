@@ -11,3 +11,17 @@
 .two-floating-elements > p ~ ul {
 	margin-left: 0;
 }
+
+.two-floating-elements-70 > ul ~ p,
+.two-floating-elements-70 > p ~ ul {
+	max-width: 70%;
+	float: left;
+	font-size: 0.9em;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.two-floating-elements-70 > p ~ ul {
+	margin-left: 0;
+}
