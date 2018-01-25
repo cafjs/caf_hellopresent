@@ -5,5 +5,4 @@ build.js
 build.min.js
 all.tgz
 npm-shrinkwrap.json
-public/reveal
 public/slides*

@@ -1,4 +1,8 @@
 var Reveal = require('../reveal/js/reveal.js');
+if (global) {
+    // plugin markdown assumes Reveal is global
+    global.Reveal = Reveal;
+}
 var AppActions = require('./actions/AppActions');
 
 var hljs = require('highlight.js');

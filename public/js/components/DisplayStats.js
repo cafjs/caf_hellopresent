@@ -13,16 +13,19 @@ var AppActions = require('../actions/AppActions');
  * where 'base' is  max(mean -ci, 0) and new ci is max(mean +ci -base, 0)
  */
 var processData = function(data) {
-    return data.map(function(x, i) {
-        var result = {slide: i};
-        var mean = (((typeof x.mean === 'number') && !isNaN(x.mean)) ? x.mean :
-                    0.0);
-        var ci = (((typeof x.ci === 'number') && !isNaN(x.ci)) ? x.ci : 0.0);
-        result.base = Math.max(mean -ci, 0);
-        result.mean = mean;
-        result.ci = Math.max(mean + ci -result.base, 0);
-        return result;
-    });
+    return data
+        .filter(function(x) { return !!x;})
+        .map(function(x, i) {
+            var result = {slide: i};
+            var mean = (((typeof x.mean === 'number') && !isNaN(x.mean)) ?
+                        x.mean : 0.0);
+            var ci = (((typeof x.ci === 'number') && !isNaN(x.ci)) ?
+                      x.ci : 0.0);
+            result.base = Math.max(mean -ci, 0);
+            result.mean = mean;
+            result.ci = Math.max(mean + ci -result.base, 0);
+            return result;
+        });
 };
 
 var DisplayStats = {
