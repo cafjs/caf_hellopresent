@@ -2,8 +2,8 @@
 # DOCKER-VERSION  1.7.0
 # AUTHOR:         Antonio Lain <antlai@cafjs.com>
 # DESCRIPTION:    Cloud Assistants hellopresent management
-# TO_BUILD:       cafjs mkImage . registry.cafjs.com:32000/root-hellopresent .
-# TO_RUN:         cafjs run --appImage registry.cafjs.com:32000/root-hellopresent hellopresent
+# TO_BUILD:       cafjs mkImage . gcr.io/cafjs-k8/root-hellopresent .
+# TO_RUN:         cafjs run --appImage gcr.io/cafjs-k8/root-hellopresent hellopresent
 
 
 FROM node:8
