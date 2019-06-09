@@ -20,7 +20,7 @@
         "object-assign": "^4.1.0",
         "recharts": "^0.14.2",
         "highlight.js": "^9.7.0",
-        "reveal.js": "^3.6.0",
+        "reveal.js": "3.6.0",
         "superagent": "^3.3.1"
     },
     "devDependencies": {
