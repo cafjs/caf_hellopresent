@@ -18,7 +18,7 @@
         "caf_transport": "^0.3.0",
         "jstat": "^1.5.3",
         "object-assign": "^4.1.0",
-        "recharts": "^0.14.2",
+        "recharts": "^0.22.5",
         "highlight.js": "^9.7.0",
         "reveal.js": "3.6.0",
         "superagent": "^3.3.1"
