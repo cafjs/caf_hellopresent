@@ -1,10 +1,10 @@
-# CAF (Cloud Assistant Framework)
+# Caf.js
 
 Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadget.
 
-See http://www.cafjs.com
+See https://www.cafjs.com
 
-## A CAF example  implementing a presentation tool
+## Example of a Presentation Tool
 
 Learns during rehearsal how long it takes you to present a set of `Reveal.js` slides. Then, in the middle of the actual presentation, it will send you a warning SMS if you are not going to make it.
 
@@ -17,13 +17,13 @@ Using that instance, create a presentation `bar` by adding a binding to a URL co
 
 It is convenient to use a github repo. For example, if you are the user `foo`:
 
-    foo-bar -> https://rawgit.com/foo/my_presentations/master/presentation1
+    foo-bar -> https://cdn.jsdelivr.net/gh/foo/my_presentations/presentation1
 
 assuming that your `slides.md` file is in a repo `my_presentations` under subdir `presentation1` in github.
 
 And the presentation will show up when opening your instance `bar` of this app.
 
-Note that `rawgit.com` ensures that the mime type for svg and other special files is not just `text/plain`. See http://rawgit.com/ for details.
+Note that `cdn.jsdelivr.net` ensures that the mime type for svg and other special files is not just `text/plain`. See http://cdn.jsdelivr.net/ for details.
 
 It is also easy to run in local mode, useful when editing slides. Create a symbolic link to your slides directory in `caf_hellopresent/public/slides`, run `cafjs` tools mounting your home directory (assuming it contains your slides), and set the link as:
 
