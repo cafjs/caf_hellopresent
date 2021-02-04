@@ -17,30 +17,31 @@ limitations under the License.
 
 "use strict";
 
-var revealUtil = require('./revealUtil');
+const revealUtil = require('./revealUtil');
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var AppSession = require('./session/AppSession');
-var MyApp = require('./components/MyApp');
-var redux = require('redux');
-var AppReducer = require('./reducers/AppReducer');
-var cE = React.createElement;
-var SharedMap = require('caf_sharing').SharedMap;
-var REVEAL_TOP_ID="revealTopId";
+const React = require('react');
+const ReactDOM = require('react-dom');
+const AppSession = require('./session/AppSession');
+const MyApp = require('./components/MyApp');
+const redux = require('redux');
+const AppReducer = require('./reducers/AppReducer');
+const cE = React.createElement;
+const SharedMap = require('caf_sharing').SharedMap;
+const REVEAL_TOP_ID="revealTopId";
 
-var main = exports.main = function(data) {
-    var ctx =  {
+const main = exports.main = function(data) {
+    const ctx =  {
         store: redux.createStore(AppReducer),
         map : new SharedMap({debug: function(x) {
             console.log(x);
         }})
     };
-    if (typeof window !== 'undefined') {
+
+    if (typeof window !== 'undefined') { // No SSR
         AppSession.connect(ctx, function(err, data) {
             err && console.log('Cannot connect:' + err);
             if (data.isAdmin) {
-                var reactElem = document &&
+                const reactElem = document &&
                         document.getElementById(REVEAL_TOP_ID);
                 if (reactElem) {
                     reactElem.setAttribute('style', 'display:none;');
