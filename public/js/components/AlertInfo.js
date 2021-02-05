@@ -1,33 +1,38 @@
-var React = require('react');
-var rB = require('react-bootstrap');
-var cE = React.createElement;
-var AppActions = require('../actions/AppActions');
-var objectAssign = require('object-assign');
+'use strict';
 
-var AlertInfo = {
+const React = require('react');
+const rB = require('react-bootstrap');
+const cE = React.createElement;
+const AppActions = require('../actions/AppActions');
 
-    handleConfigSMS : function() {
-        var sms = objectAssign({}, this.props.sms);
+class AlertInfo extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleConfigSMS = this.handleConfigSMS.bind(this);
+        this.handleAlarm = this.handleAlarm.bind(this);
+    }
+
+    handleConfigSMS() {
+        const sms = {...this.props.sms};
         AppActions.setLocalState(this.props.ctx, {localSMS: sms});
-    },
+    }
 
-    handleAlarm: function() {
-        AppActions.alarmActive(this.props.ctx, this.refs.alarm.getChecked());
-    },
+    handleAlarm(e) {
+        AppActions.alarmActive(this.props.ctx, e.target.checked);
+    }
 
-    render: function() {
-        return cE(rB.Grid, {fluid: true},
-                  cE(rB.Row, null,
+    render() {
+        return cE(rB.Form, {horizontal: true},
+                  cE(rB.FormGroup, {controlId: 'alertId'},
                      cE(rB.Col, {xs:4, sm:4},
-                        cE(rB.Input, {
-                            type: 'checkbox',
-                            ref: 'alarm',
+                        cE(rB.Checkbox, {
                             checked: this.props.alarmActive,
-                            onClick: this.handleAlarm
+                            onChange: this.handleAlarm
                         }, 'Alarm ON')
                        ),
                      cE(rB.Col, {xs:4, sm:4},
-                        cE(rB.Button, {disabled: true},
+                        cE(rB.ControlLabel, null,
                            (this.props.sentSMS ? cE(rB.Glyphicon, {
                                glyph: 'send',
                                className: 'text-danger'
@@ -37,11 +42,11 @@ var AlertInfo = {
                      cE(rB.Col, {xs:4, sm:4},
                         cE(rB.Button, {
                             onClick: this.handleConfigSMS
-                        }, "Config SMS")
+                        }, 'Config SMS')
                        )
                     )
                  );
     }
 };
 
-module.exports = React.createClass(AlertInfo);
+module.exports = AlertInfo;

@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-"use strict";
+'use strict';
 
 const revealUtil = require('./revealUtil');
 
@@ -27,7 +27,7 @@ const redux = require('redux');
 const AppReducer = require('./reducers/AppReducer');
 const cE = React.createElement;
 const SharedMap = require('caf_sharing').SharedMap;
-const REVEAL_TOP_ID="revealTopId";
+const REVEAL_TOP_ID= 'revealTopId';
 
 const main = exports.main = function(data) {
     const ctx =  {
@@ -37,20 +37,28 @@ const main = exports.main = function(data) {
         }})
     };
 
-    if (typeof window !== 'undefined') { // No SSR
-        AppSession.connect(ctx, function(err, data) {
-            err && console.log('Cannot connect:' + err);
-            if (data.isAdmin) {
-                const reactElem = document &&
-                        document.getElementById(REVEAL_TOP_ID);
-                if (reactElem) {
-                    reactElem.setAttribute('style', 'display:none;');
+    if (typeof window !== 'undefined') {
+        return (async function() {
+            try {
+                const data = await AppSession.connect(ctx);
+                if (data.isAdmin) {
+                    const reactElem = document &&
+                          document.getElementById(REVEAL_TOP_ID);
+                    if (reactElem) {
+                        reactElem.setAttribute('style', 'display:none;');
+                    }
+                    ReactDOM.render(cE(MyApp, {ctx: ctx}),
+                                    document.getElementById('content'));
+                } else {
+                    await revealUtil.init(ctx, data);
                 }
-                ReactDOM.render(cE(MyApp, {ctx: ctx}),
-                                document.getElementById('content'));
-            } else {
-                revealUtil.init(ctx, data);
+            } catch (err) {
+                document.getElementById('content').innerHTML =
+                    '<H1>Cannot connect: ' + err + '<H1/>';
+                console.log('Cannot connect:' + err);
             }
-        });
+        })();
+    } else {
+        throw new Error('SSR not supported');
     }
 };

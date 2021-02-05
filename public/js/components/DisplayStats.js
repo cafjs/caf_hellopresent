@@ -1,8 +1,10 @@
-var React = require('react');
-var rB = require('react-bootstrap');
-var cE = React.createElement;
-var rC = require('recharts');
-var AppActions = require('../actions/AppActions');
+'use strict';
+
+const React = require('react');
+const rB = require('react-bootstrap');
+const cE = React.createElement;
+const rC = require('recharts');
+const AppActions = require('../actions/AppActions');
 
 
 /*
@@ -12,15 +14,17 @@ var AppActions = require('../actions/AppActions');
  *  Array.<{slide:number, base: number, ci: number, mean: number}>
  * where 'base' is  max(mean -ci, 0) and new ci is max(mean +ci -base, 0)
  */
-var processData = function(data) {
+const processData = function(data) {
     return data
         .filter(function(x) { return !!x;})
         .map(function(x, i) {
-            var result = {slide: i};
-            var mean = (((typeof x.mean === 'number') && !isNaN(x.mean)) ?
-                        x.mean : 0.0);
-            var ci = (((typeof x.ci === 'number') && !isNaN(x.ci)) ?
-                      x.ci : 0.0);
+            const result = {slide: i};
+            const mean = ((typeof x.mean === 'number') && !isNaN(x.mean)) ?
+                x.mean :
+                0.0;
+            const ci = ((typeof x.ci === 'number') && !isNaN(x.ci)) ?
+                x.ci :
+                0.0;
             result.base = Math.max(mean -ci, 0);
             result.mean = mean;
             result.ci = Math.max(mean + ci -result.base, 0);
@@ -28,21 +32,26 @@ var processData = function(data) {
         });
 };
 
-var DisplayStats = {
+class  DisplayStats extends React.Component {
 
-    doDismissStats: function(ev) {
+    constructor(props) {
+        super(props);
+        this.doDismissStats = this.doDismissStats.bind(this);
+    }
+
+    doDismissStats(ev) {
         AppActions.setLocalState(this.props.ctx, {localStats: null});
-    },
+    }
 
-    render: function() {
-        var name = this.props.localStats && this.props.localStats.name;
+    render() {
+        const name = this.props.localStats && this.props.localStats.name;
         var data =  this.props.localStats && this.props.localStats.data || [];
         data = processData(data);
-        return cE(rB.Modal,{show: !!this.props.localStats,
-                            onHide: this.doDismissStats,
-                            animation: false},
+        return cE(rB.Modal, {show: !!this.props.localStats,
+                             onHide: this.doDismissStats,
+                             animation: false},
                   cE(rB.Modal.Header, {closeButton: true},
-                     cE(rB.Modal.Title, null, "Stats for " + name  +
+                     cE(rB.Modal.Title, null, 'Stats for ' + name  +
                         ' (Minutes)')
                     ),
                   cE(rB.ModalBody, null,
@@ -66,10 +75,10 @@ var DisplayStats = {
                        )
                     ),
                   cE(rB.Modal.Footer, null,
-                     cE(rB.Button, {onClick: this.doDismissStats}, "Continue")
+                     cE(rB.Button, {onClick: this.doDismissStats}, 'Continue')
                     )
                  );
     }
 };
 
-module.exports = React.createClass(DisplayStats);
+module.exports = DisplayStats;

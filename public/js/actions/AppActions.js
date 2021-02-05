@@ -1,9 +1,9 @@
-var AppConstants = require('../constants/AppConstants');
-var json_rpc = require('caf_transport').json_rpc;
-var MAP_UPDATE = 'mapUpdate';
+const AppConstants = require('../constants/AppConstants');
+const json_rpc = require('caf_transport').json_rpc;
+const MAP_UPDATE = 'mapUpdate';
 
-var updateF = function(store, state, map) {
-    var d = {
+const updateF = function(store, state, map) {
+    const d = {
         type: AppConstants.APP_UPDATE,
         state: state,
         map: map
@@ -11,74 +11,67 @@ var updateF = function(store, state, map) {
     store.dispatch(d);
 };
 
-var errorF =  function(store, err) {
-    var d = {
+const errorF =  function(store, err) {
+    const d = {
         type: AppConstants.APP_ERROR,
         error: err
     };
     store.dispatch(d);
 };
 
-var getNotifData = function(msg) {
+const getNotifData = function(msg) {
     return json_rpc.getMethodArgs(msg)[0];
 };
 
-var notifyF = function(store, message) {
-    var d = {
+const notifyF = function(store, message) {
+    const d = {
         type: AppConstants.APP_NOTIFICATION,
         state: getNotifData(message)
     };
     store.dispatch(d);
 };
 
-var wsStatusF =  function(store, isClosed) {
-    var d = {
+const wsStatusF =  function(store, isClosed) {
+    const d = {
         type: AppConstants.WS_STATUS,
         isClosed: isClosed
     };
     store.dispatch(d);
 };
 
-var AppActions = {
-    init: function(ctx, cb) {
-        ctx.session.hello(ctx.session.getCacheKey(), function(err, data) {
-            if (err) {
-                errorF(ctx.store, err);
-            } else {
-                AppActions.getMap(ctx);
-                updateF(ctx.store, data);
-            }
-            cb(err, data);
-        });
+const AppActions = {
+    async init(ctx) {
+        try {
+            const data = await ctx.session.hello(ctx.session.getCacheKey())
+                  .getPromise();
+            await AppActions.getMap(ctx);
+            updateF(ctx.store, data);
+            return data;
+        } catch (err) {
+            errorF(ctx.store, err);
+            throw err; // rethrow to show html error page
+        }
     },
-    getStats: function(ctx, name) {
-        ctx.session.getStats(name, function(err, data) {
-            if (err) {
-                errorF(ctx.store, err);
-            } else {
-                updateF(ctx.store, {localStats: {
-                    data: data,
-                    name: name
-                }});
-            }
-        });
+    async getStats(ctx, name) {
+        try {
+            const data = await ctx.session.getStats(name).getPromise();
+            updateF(ctx.store, {localStats: {data, name}});
+        } catch (err) {
+            errorF(ctx.store, err);
+        }
     },
-    getMap: function(ctx) {
-        ctx.session.getMap(ctx.map.getVersion(), function(err, delta) {
-            if (err) {
-                errorF(ctx.store, err);
-            } else {
-                try {
-                    ctx.map.applyChanges(delta);
-                    updateF(ctx.store, {}, ctx.map);
-                } catch (ex) {
-                    errorF(ctx.store, ex);
-                }
-            }
-        });
+    async getMap(ctx) {
+        try {
+            const delta = await ctx.session.getMap(ctx.map.getVersion())
+                  .getPromise();
+            ctx.map.applyChanges(delta);
+            updateF(ctx.store, {}, ctx.map);
+        } catch (err) {
+            errorF(ctx.store, err);
+        }
     },
-    message:  function(ctx, msg) {
-        var data = getNotifData(msg);
+    message(ctx, msg) {
+        const data = getNotifData(msg);
         console.log('message:' + JSON.stringify(data));
         if (data.type === MAP_UPDATE) {
             AppActions.getMap(ctx);
@@ -86,34 +79,33 @@ var AppActions = {
             AppActions.getState(ctx);
         }
     },
-    closing:  function(ctx, err) {
+    closing(ctx, err) {
         console.log('Closing:' + JSON.stringify(err));
         wsStatusF(ctx.store, true);
     },
-    setLocalState: function(ctx, data) {
+    setLocalState(ctx, data) {
         updateF(ctx.store, data);
     },
-    resetError: function(ctx) {
+    resetError(ctx) {
         errorF(ctx.store, null);
     },
-    setError: function(ctx, err) {
+    setError(ctx, err) {
         errorF(ctx.store, err);
     }
 };
 
 ['changeSMS', 'changeURL', 'changeIsRecording', 'changeIsLive', 'resetStats',
  'changePage', 'getState', 'alarmActive'].forEach(function(x) {
-     AppActions[x] = function() {
-         var args = Array.prototype.slice.call(arguments);
-         var ctx = args.shift();
-         args.push(function(err, data) {
-             if (err) {
-                 errorF(ctx.store, err);
-             } else {
-                 updateF(ctx.store, data);
-             }
-         });
-         ctx.session[x].apply(ctx.session, args);
+     AppActions[x] = async function() {
+         const args = Array.prototype.slice.call(arguments);
+         const ctx = args.shift();
+         try {
+             const data = await ctx.session[x].apply(ctx.session, args)
+                   .getPromise();
+             updateF(ctx.store, data);
+         } catch (err) {
+             errorF(ctx.store, err);
+         }
      };
 });
 
