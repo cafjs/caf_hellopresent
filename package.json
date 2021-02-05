@@ -20,7 +20,7 @@
         "jstat": "^1.5.3",
         "highlight.js": "^9.7.0",
         "reveal.js": "3.6.0",
-        "superagent": "^3.3.1"
+        "superagent": "^6.1.0"
     },
     "devDependencies": {
         "nodeunit": ">=0.9",

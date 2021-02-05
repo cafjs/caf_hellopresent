@@ -45,7 +45,7 @@ class  DisplayStats extends React.Component {
 
     render() {
         const name = this.props.localStats && this.props.localStats.name;
-        var data =  this.props.localStats && this.props.localStats.data || [];
+        let data =  this.props.localStats && this.props.localStats.data || [];
         data = processData(data);
         return cE(rB.Modal, {show: !!this.props.localStats,
                              onHide: this.doDismissStats,

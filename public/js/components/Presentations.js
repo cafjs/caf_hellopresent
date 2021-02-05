@@ -1,27 +1,38 @@
-var React = require('react');
-var rB = require('react-bootstrap');
-var cE = React.createElement;
-var AppActions = require('../actions/AppActions');
-var objectAssign = require('object-assign');
-var PresentationsTable = require('./PresentationsTable');
+'use strict';
 
-var Presentations = {
+const React = require('react');
+const rB = require('react-bootstrap');
+const cE = React.createElement;
+const AppActions = require('../actions/AppActions');
+const PresentationsTable = require('./PresentationsTable');
 
-    handleName : function() {
-        var pres = objectAssign({}, this.props.localPresentations, {
-            name: this.refs.namePres.getValue()
+class Presentations extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleName = this.handleName.bind(this);
+        this.handleURL = this.handleURL.bind(this);
+        this.doAdd = this.doAdd.bind(this);
+        this.doDelete = this.doDelete.bind(this);
+        this.doStats = this.doStats.bind(this);
+        this.doReset = this.doReset.bind(this);
+    }
+
+    handleName(e) {
+        const pres = Object.assign({}, this.props.localPresentations, {
+            name: e.target.value
         });
         AppActions.setLocalState(this.props.ctx, {localPresentations: pres});
-    },
+    }
 
-    handleURL : function() {
-        var pres = objectAssign({}, this.props.localPresentations, {
-            url: this.refs.url.getValue()
+    handleURL(e) {
+        const pres = Object.assign({}, this.props.localPresentations, {
+            url: e.target.value
         });
         AppActions.setLocalState(this.props.ctx, {localPresentations: pres});
-    },
+    }
 
-    doAdd: function(ev) {
+    doAdd(ev) {
         if (this.props.localPresentations &&
             this.props.localPresentations.name &&
             this.props.localPresentations.url) {
@@ -29,97 +40,92 @@ var Presentations = {
                                  this.props.localPresentations.name,
                                  this.props.localPresentations.url);
         } else {
-            var err = new Error('Missing arguments');
+            const err = new Error('Missing arguments');
             AppActions.setError(this.props.ctx, err);
         }
-    },
+    }
 
-    doDelete: function(ev) {
+    doDelete(ev) {
         if (this.props.localPresentations &&
             this.props.localPresentations.name) {
             AppActions.changeURL(this.props.ctx,
                                  this.props.localPresentations.name,
                                  null);
         } else {
-            var err = new Error('Missing arguments');
+            const err = new Error('Missing arguments');
             AppActions.setError(this.props.ctx, err);
         }
-    },
+    }
 
-    doStats: function(ev) {
+    doStats(ev) {
         if (this.props.localPresentations &&
             this.props.localPresentations.name) {
             AppActions.getStats(this.props.ctx,
                                 this.props.localPresentations.name);
         } else {
-            var err = new Error('Missing arguments');
+            const err = new Error('Missing arguments');
             AppActions.setError(this.props.ctx, err);
         }
-    },
+    }
 
-    doReset: function(ev) {
+    doReset(ev) {
         if (this.props.localPresentations &&
             this.props.localPresentations.name) {
             AppActions.resetStats(this.props.ctx,
                                   this.props.localPresentations.name);
         } else {
-            var err = new Error('Missing arguments');
+            const err = new Error('Missing arguments');
             AppActions.setError(this.props.ctx, err);
         }
-    },
+    }
 
-    render: function() {
-        return cE(rB.Grid, {fluid: true},
-                  cE(rB.Row, null,
-                     cE(rB.Col, {xs:12, sm:6},
-                        cE(rB.Input, {
-                            label: 'Name',
+    render() {
+        return cE(rB.Form, {horizontal: true},
+                  cE(rB.FormGroup, {controlId: 'namePresId'},
+                     cE(rB.Col, {sm:6, xs:12},
+                        cE(rB.ControlLabel, null, 'Name')
+                       ),
+                     cE(rB.Col, {sm: 6, xs: 12},
+                        cE(rB.FormControl, {
                             type: 'text',
-                            ref: 'namePres',
-                            value: this.props.localPresentations.name,
+                            value:  this.props.localPresentations.name,
                             onChange: this.handleName
                         })
+                       )
+                    ),
+                  cE(rB.FormGroup, {controlId: 'urlId'},
+                     cE(rB.Col, {sm:6, xs:12},
+                        cE(rB.ControlLabel, null, 'URL')
                        ),
-                     cE(rB.Col, {xs:12, sm:6},
-                        cE(rB.Input, {
-                            label: 'URL',
+                     cE(rB.Col, {sm: 6, xs: 12},
+                        cE(rB.FormControl, {
                             type: 'text',
-                            ref: 'url',
-                            value: this.props.localPresentations.url,
+                            value:  this.props.localPresentations.url,
                             onChange: this.handleURL
                         })
                        )
                     ),
-                  cE(rB.Row, null,
-                     cE(rB.Col, {xs:3, sm:3},
-                        cE(rB.Button, {
-                            onClick: this.doAdd
-                        }, "Add")
-                       ),
-                     cE(rB.Col, {xs:3, sm:3},
-                        cE(rB.Button, {
-                            bsStyle: 'danger',
-                            onClick: this.doDelete
-                        }, "Delete")
-                       ),
-                     cE(rB.Col, {xs:3, sm:3},
-                        cE(rB.Button, {
-                            onClick: this.doStats
-                        }, "Stats")
-                       ),
-                     cE(rB.Col, {xs:3, sm:3},
-                        cE(rB.Button, {
-                            bsStyle: 'danger',
-                            onClick: this.doReset
-                        }, "Reset")
+                  cE(rB.FormGroup, {controlId: 'actionsId'},
+                     cE(rB.Col, {smOffset: 6, sm:6, xs:12},
+                        cE(rB.ButtonGroup, null,
+                           cE(rB.Button, {
+                               onClick: this.doAdd
+                           }, "Add"),
+                           cE(rB.Button, {
+                               bsStyle: 'danger',
+                               onClick: this.doDelete
+                           }, "Delete"),
+                           cE(rB.Button, {
+                               onClick: this.doStats
+                           }, "Stats"),
+                           cE(rB.Button, {
+                               bsStyle: 'danger',
+                               onClick: this.doReset
+                           }, "Reset")
+                          )
                        )
                     ),
-                  cE(rB.Row, null,
-                     cE(rB.Col, {xs:12, sm:12},
-                        cE('hr', null)
-                       )
-                    ),
-                  cE(rB.Row, null,
+                  cE(rB.FormGroup, {controlId: 'tableId'},
                      cE(rB.Col, {xs:12, sm:12},
                         cE(PresentationsTable, {
                             presentations: this.props.presentations
@@ -130,4 +136,4 @@ var Presentations = {
     }
 };
 
-module.exports = React.createClass(Presentations);
+module.exports = Presentations;
