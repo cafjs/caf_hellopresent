@@ -53,6 +53,11 @@ const main = exports.main = function(data) {
                     await revealUtil.init(ctx, data);
                 }
             } catch (err) {
+                const reactElem = document &&
+                      document.getElementById(REVEAL_TOP_ID);
+                if (reactElem) {
+                    reactElem.setAttribute('style', 'display:none;');
+                }
                 document.getElementById('content').innerHTML =
                     '<H1>Cannot connect: ' + err + '<H1/>';
                 console.log('Cannot connect:' + err);

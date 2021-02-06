@@ -74,7 +74,7 @@ class MyApp extends React.Component {
                                      sm: 5,
                                      xs:11,
                                      className: 'text-right'
-                                 }, this.state.fullName)
+                                 }, this.state.fullName || '')
                                 )
                              )
                           )

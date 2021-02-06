@@ -72,7 +72,7 @@ class SMSConfig extends React.Component {
                               cE(rB.FormControl, {
                                   type: 'text',
                                   value: this.props.localSMS &&
-                                      this.props.localSMS.api_key,
+                                      this.props.localSMS.api_key || '',
                                   onChange: this.handleApiKey
                               })
                              )
@@ -85,7 +85,7 @@ class SMSConfig extends React.Component {
                               cE(rB.FormControl, {
                                   type: 'password',
                                    value: this.props.localSMS &&
-                                      this.props.localSMS.api_secret,
+                                      this.props.localSMS.api_secret || '',
                                   onChange: this.handleApiSecret
                               })
                              )
@@ -98,7 +98,7 @@ class SMSConfig extends React.Component {
                               cE(rB.FormControl, {
                                   type: 'password',
                                   value: this.props.localSMS &&
-                                      this.props.localSMS.from,
+                                      this.props.localSMS.from || '',
                                   onChange: this.handleFrom
                               })
                              )
@@ -111,7 +111,7 @@ class SMSConfig extends React.Component {
                               cE(rB.FormControl, {
                                   type: 'password',
                                   value: this.props.localSMS &&
-                                      this.props.localSMS.to,
+                                      this.props.localSMS.to || '',
                                   onChange: this.handleTo
                               })
                              )

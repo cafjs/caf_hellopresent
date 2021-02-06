@@ -6,7 +6,10 @@ if (global) {
     global.Reveal = Reveal;
 }
 const AppActions = require('./actions/AppActions');
-const hljs = require('highlight.js');
+const hljs = require('highlight.js/lib/highlight');
+const javascript = require('highlight.js/lib/languages/javascript');
+hljs.registerLanguage('javascript', javascript);
+
 const request = require('superagent');
 
 const MARKDOWN_SECTION_ID = 'markdownSectionId';
