@@ -88,7 +88,7 @@ class Presentations extends React.Component {
                      cE(rB.Col, {sm: 6, xs: 12},
                         cE(rB.FormControl, {
                             type: 'text',
-                            value:  this.props.localPresentations.name,
+                            value:  this.props.localPresentations.name || '',
                             onChange: this.handleName
                         })
                        )
@@ -100,7 +100,7 @@ class Presentations extends React.Component {
                      cE(rB.Col, {sm: 6, xs: 12},
                         cE(rB.FormControl, {
                             type: 'text',
-                            value:  this.props.localPresentations.url,
+                            value:  this.props.localPresentations.url || '',
                             onChange: this.handleURL
                         })
                        )

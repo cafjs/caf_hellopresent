@@ -44,6 +44,10 @@
                    "name" :"static2"
                },
                {
+                   "name":  "compress",
+                   "module": null
+               },
+               {
                    "name": "forward",
                    "module": "caf_forward#pipe",
                    "description": "Forward HTTP requests.",

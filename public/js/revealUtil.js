@@ -6,7 +6,7 @@ if (global) {
     global.Reveal = Reveal;
 }
 const AppActions = require('./actions/AppActions');
-const hljs = require('highlight.js/lib/highlight');
+const hljs = require('highlight.js/lib/core');
 const javascript = require('highlight.js/lib/languages/javascript');
 hljs.registerLanguage('javascript', javascript);
 
