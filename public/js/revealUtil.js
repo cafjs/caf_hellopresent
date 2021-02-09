@@ -1,14 +1,9 @@
 'use strict';
+const Reveal = require('reveal.js');
+const Markdown = require('reveal.js/plugin/markdown/markdown.js');
+const Highlight = require('reveal.js/plugin/highlight/highlight.js');
 
-const Reveal = require('../reveal/js/reveal.js');
-if (global) {
-    // plugin markdown assumes Reveal is global
-    global.Reveal = Reveal;
-}
 const AppActions = require('./actions/AppActions');
-const hljs = require('highlight.js/lib/core');
-const javascript = require('highlight.js/lib/languages/javascript');
-hljs.registerLanguage('javascript', javascript);
 
 const request = require('superagent');
 
@@ -35,7 +30,6 @@ exports.init = async function(ctx, data) {
         null;
 
     Reveal.addEventListener('ready', function() {
-        hljs.initHighlighting();
         if (data.print) {
 	    const link = document.createElement( 'link' );
 	    link.rel = 'stylesheet';
@@ -70,19 +64,6 @@ exports.init = async function(ctx, data) {
         slideNumber: true,
         transition: 'none',
         transitionSpeed: 'fast',
-        dependencies: [
-	    {
-                src: 'reveal/plugin/markdown/marked.js',
-                condition: function() {
-                    return !!document.querySelector('[data-markdown]');
-                }
-            },
-            {
-                src: 'reveal/plugin/markdown/markdown.js',
-                condition: function() {
-                    return !!document.querySelector('[data-markdown]');
-                }
-            }
-	]
+        plugins: [ Markdown, Highlight]
     });
 };
