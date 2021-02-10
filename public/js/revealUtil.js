@@ -61,6 +61,9 @@ exports.init = async function(ctx, data) {
         progress: false,
         controls: false,
         center: false,
+        margin: 0.10,
+        width: 1280, // 16/9 aspect ratio
+        height: 720,
         slideNumber: true,
         transition: 'none',
         transitionSpeed: 'fast',
